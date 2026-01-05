@@ -59,6 +59,11 @@ class Search:
         Calls :class:`SearchTracks` which returns the tracks that fuzzily match
         the search terms. Then adds them to the `SearchResults` store.
         """
+        tracks = []
+        if len(self.query) == 16:
+            tracks = TrackStore.trackhashmap.get(self.query).tracks
+            if tracks:
+                return tracks
         self.tracks = TrackStore.get_flat_list()
         return searchlib.TopResults().search(self.query, tracks_only=True)
 
