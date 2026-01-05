@@ -61,9 +61,11 @@ class Search:
         """
         tracks = []
         if len(self.query) == 16:
-            tracks = TrackStore.trackhashmap.get(self.query).tracks
-            if tracks:
-                return tracks
+            group = TrackStore.trackhashmap.get(self.query)
+            if group:
+                tracks = group.tracks
+                if tracks:
+                    return tracks
         self.tracks = TrackStore.get_flat_list()
         return searchlib.TopResults().search(self.query, tracks_only=True)
 
