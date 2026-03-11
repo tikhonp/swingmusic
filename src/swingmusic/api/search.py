@@ -73,6 +73,13 @@ class Search:
         """Calls :class:`SearchArtists` which returns the artists that fuzzily match
         the search term. Then adds them to the `SearchResults` store.
         """
+        if len(self.query) == 16:
+            from swingmusic.store.artists import ArtistStore
+
+            entry = ArtistStore.artistmap.get(self.query)
+            if entry:
+                return serialize_for_cards([entry.artist])
+
         artists = searchlib.SearchArtists(self.query)()
         return serialize_for_cards(artists)
 
@@ -80,6 +87,14 @@ class Search:
         """Calls :class:`SearchAlbums` which returns the albums that fuzzily match
         the search term. Then adds them to the `SearchResults` store.
         """
+        if len(self.query) == 16:
+            from swingmusic.serializers.album import serialize_for_card_many
+            from swingmusic.store.albums import AlbumStore
+
+            entry = AlbumStore.albummap.get(self.query)
+            if entry:
+                return serialize_for_card_many([entry.album])
+
         return searchlib.TopResults().search(self.query, albums_only=True)
 
     def get_top_results(
