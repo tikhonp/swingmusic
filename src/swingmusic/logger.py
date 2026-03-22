@@ -195,8 +195,7 @@ CONFIG = {
         }
     }
 }
-
-log = None
+log = logging.getLogger(__name__)
 
 def setup_logger(app_dir:Path, debug=False):
     """
